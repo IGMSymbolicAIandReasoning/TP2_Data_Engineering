@@ -2,17 +2,14 @@ package drugBankTD
 
 import java.io.{FileWriter, IOException}
 import java.util
-import java.util.ArrayList
+import java.util.{ArrayList, Calendar, Date}
 import java.lang
-import java.util.Date
-
 import com.github.javafaker.Faker
 import org.apache.jena.rdf.model.{Model, ModelFactory}
+
 import java.text.SimpleDateFormat
-import java.time.Instant
+import java.time.{Instant, Year}
 import drugBankTD.Producer
-
-
 
 import scala.collection.convert.ImplicitConversions.`collection AsScalaIterable`
 import scala.util.control.Breaks.break

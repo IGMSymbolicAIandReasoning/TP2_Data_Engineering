@@ -4,14 +4,15 @@ import com.twitter.bijection.Injection
 import com.twitter.bijection.avro.GenericAvroCodecs
 import org.apache.avro.Schema
 import org.apache.avro.generic.GenericRecord
-import org.apache.kafka.clients.consumer.{ConsumerRecord, ConsumerRecords, KafkaConsumer}
+import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 
 import java.nio.file.{Files, Paths}
+import java.text.SimpleDateFormat
 import java.util
-import scala.collection.JavaConverters._
+import java.util.Calendar
 
 
-object ConsumerAVRO extends App {
+object ConsumerAVROAge extends App {
   import java.util.Properties
 
   val TOPIC="tp1"
@@ -26,15 +27,14 @@ object ConsumerAVRO extends App {
   val consumer = new KafkaConsumer[String, Array[Byte]](props)
 
   consumer.subscribe(util.Arrays.asList(TOPIC))
-  val file: String = new String(Files.readAllBytes(Paths.get("/Users/louis_billaut/Desktop/M2/data_engineer/project2/TP2_Data_Engineering/schema.avsc")))
+  val file: String = new String(Files.readAllBytes(Paths.get("/Users/louis_billaut/Desktop/M2/data_engineer/project2/TP2_Data_Engineering/schemaAge.avsc")))
   val parser: Schema.Parser = new Schema.Parser
   val schema: Schema = parser.parse(file)
   val recordInjection: Injection[GenericRecord, Array[Byte]] = GenericAvroCodecs.toBinary(schema)
   while(true){
     val records : ConsumerRecords[String, Array[Byte]] = consumer.poll(100);
     records.forEach(r => {
-      recordInjection.invert(r.value()).get.get("vaccine")
-      println("vaccine " + recordInjection.invert(r.value()).get.get("vaccine"))
+      println("id=" + recordInjection.invert(r.value()).get.get("id") + ", age=" + recordInjection.invert(r.value()).get.get("age"))
     })
   }
 
