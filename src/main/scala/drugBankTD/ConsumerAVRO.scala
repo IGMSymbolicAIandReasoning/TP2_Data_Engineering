@@ -26,7 +26,7 @@ object ConsumerAVRO extends App {
   val consumer = new KafkaConsumer[String, Array[Byte]](props)
 
   consumer.subscribe(util.Arrays.asList(TOPIC))
-  val file: String = new String(Files.readAllBytes(Paths.get("/Users/louis_billaut/Desktop/M2/data_engineer/project2/TP2_Data_Engineering/schema.avsc")))
+  val file: String = new String(Files.readAllBytes(Paths.get("/home/pierrejean/IdeaProjects/TP1_Data_engineering/schema.avsc")))
   val parser: Schema.Parser = new Schema.Parser
   val schema: Schema = parser.parse(file)
   val recordInjection: Injection[GenericRecord, Array[Byte]] = GenericAvroCodecs.toBinary(schema)
@@ -34,7 +34,7 @@ object ConsumerAVRO extends App {
     val records : ConsumerRecords[String, Array[Byte]] = consumer.poll(100);
     records.forEach(r => {
       recordInjection.invert(r.value()).get.get("vaccine")
-      println("vaccine " + recordInjection.invert(r.value()).get.get("vaccine"))
+      println("Vaccin " + recordInjection.invert(r.value()).get.get("vaccine"))
     })
   }
 
